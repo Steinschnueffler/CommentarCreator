@@ -9,6 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
@@ -78,6 +79,7 @@ public class Main extends Application {
 		stage.setWidth(700);
 		stage.setHeight(450);
 		stage.setTitle("Commentar Creator");
+		stage.getIcons().add(new Image(Main.class.getResourceAsStream("icon.png")));
 
 		final Label inputInfo = new Label("Insert word here:");
 
