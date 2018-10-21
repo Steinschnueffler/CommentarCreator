@@ -52,6 +52,25 @@ public class Main extends Application {
 		}
 		output.setText(out.toString());
 	}
+	
+	private void pyramid(final boolean doSpaces) {
+		final String text = input.getText().trim();
+		final StringBuilder out = new StringBuilder();
+		final int length = text.length();
+		final boolean odd = length % 2 != 0;
+		final int half = odd ? (length - 1) / 2 : length / 2;
+		for(int i = odd ? 0 : 1; i <= half; i++) {
+			final int from = half - i;
+			final int to = half + i;
+			if(doSpaces || (text.charAt(from) != ' ' && text.charAt(to - (odd ? 0 : 1)) != ' '))
+				out
+					.append(buildString(" ", from))
+					.append(text.substring(from, to + (odd ? 1 : 0)))
+					.append(buildString(" ", from))
+					.append(System.lineSeparator());
+		}
+		output.setText(out.toString());
+	}
 
 	@Override
 	public void start(final Stage stage) throws Exception {
@@ -139,7 +158,22 @@ public class Main extends Application {
 		});
 		wiggle.setPrefWidth(100);
 
-		buttons.getChildren().addAll(triangle, wiggle);
+		final Button pyramid = new Button("Pyramid");
+		pyramid.setOnAction(e -> {
+			final CheckBox doSpacesButton = new CheckBox();
+			doSpacesButton.setOnAction(f -> pyramid(doSpacesButton.isSelected()));
+			doSpacesButton.setSelected(true);
+
+			final Label doSpacesInfo = new Label("do spaces");
+
+			final HBox doSpacesBox = new HBox(4, doSpacesButton, doSpacesInfo);
+			options.getChildren().setAll(doSpacesBox);
+
+			pyramid(true);
+		});
+		pyramid.setPrefWidth(100);
+		
+		buttons.getChildren().addAll(triangle, wiggle, pyramid);
 
 		final HBox outputOptions = new HBox(5);
 		outputOptions.setDisable(true);
@@ -153,7 +187,10 @@ public class Main extends Application {
 		clear.setPrefWidth(100);
 
 		final Button selectAll = new Button("Select all");
-		selectAll.setOnAction(e -> output.selectAll());
+		selectAll.setOnAction(e -> {
+			output.selectAll();
+			output.requestFocus();
+		});
 		selectAll.setPrefWidth(100);
 
 		final Button copySelected = new Button("Copy selected");
